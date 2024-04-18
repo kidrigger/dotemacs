@@ -1,0 +1,9 @@
+*~
+elpaca/
+bookmarks
+var/
+recentf
+org-persist/
+eshell/
+config.el
+history
