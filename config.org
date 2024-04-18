@@ -1,6 +1,6 @@
  #+TITLE: Kidrigger's Literate GNU Emacs Config
 #+AUTHOR: Anish Bhobe
-#+EMAIL: anish.bhobe@hotmail.com
+#+EMAIL: anishbhobe@hotmail.com
 #+STARTUP: show2levels
 #+TOC: headlines 2
 
@@ -276,7 +276,6 @@ Meow is keybind agnostic so we use QWERTY command layout default. (For now)
     (meow-setup)
     (meow-global-mode 1))
 #+END_SRC
-
 * RICE
 ** Font config
 Fonts are rather important to how things look
@@ -375,7 +374,7 @@ Install Mood Line and configure the format etc.
 #+END_SRC
 
 * General Emacs Task Packages
-** Searching
+** TODO Searching
 ** Minibuffer
 *** Interactive Completion (Vertico)
 Using vertico to provide eager completion for the minibuffer options.
@@ -415,6 +414,8 @@ This pairs with [[*Interactive Completion (Vertico)][Vertico]]
 It's better to see before you do something.
 Secondly, it's better to have my buffers and bookmarks etc be opened from the same panel since I can't even remeber where I put my beers.
 
+*TODO(Bob):* Can add more bindings to consult commands. e.g. ~consult-line~, ~meow-visit~
+
 #+BEGIN_SRC emacs-lisp
     (use-package consult
       :ensure t
@@ -423,11 +424,12 @@ Secondly, it's better to have my buffers and bookmarks etc be opened from the sa
              ("C-c l" . consult-goto-line)))
 #+END_SRC
 
-* Use specific configs
+* Use-specific configs
 ** Org Mode
 Org mode is a gem to write all kinds of markup. Including this file XD
 *** Org Settings
-
+Basic settings that use some of the ligatures and glyphs from the nerdfonts.
+This will look nice.
 #+BEGIN_SRC emacs-lisp
   (setq
    ;; Edit settings
@@ -440,30 +442,44 @@ Org mode is a gem to write all kinds of markup. Including this file XD
    ;; Org styling, hide markup etc.
    org-hide-emphasis-markers t
    org-pretty-entities t
-   org-ellipsis "~"
+   org-ellipsis "…"
 
-   ;; Agenda styling
    org-agenda-tags-column 0
-   org-agenda-block-separator ?-
+   org-agenda-block-separator ?─
    org-agenda-time-grid
    '((daily today require-timed)
      (800 1000 1200 1400 1600 1800 2000)
-     " ?????---- " "???????????????")
+     " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
    org-agenda-current-time-string
-   "?-- now -------------------------------------------------")
+   "◀── now ─────────────────────────────────────────────────")
+
 #+END_SRC
-ss
+
 *** Org Modern
 Make org belong to the current era.
 
-First, install the org-modern package with added hooks
+*Note:* ~org-modern~ indentation is a bit broken for the source blocks. Thus, a simple solution:
 #+BEGIN_SRC emacs-lisp
-      (use-package org-modern
-        :ensure t
-        :hook
-        '((org-mode . org-modern-mode)
-          (org-agenda-finalize . org-modern-agenda))
-        :custom
-        (set-face-attribute 'org-modern-symbol nil :family "JetBrainsMono Nerd Font"))
+     (use-package org-modern-indent
+      :ensure (org-modern-indent :type git :host github :repo "jdtsmith/org-modern-indent")
+      :config
+      (add-hook 'org-mode-hook #'org-modern-indent-mode 90)
+      (setq org-startup-indented t))
+#+END_SRC
+
+Finally, ~org-modern~ to actually add all the prettyfication
+#+BEGIN_SRC emacs-lisp
+  (use-package org-modern
+    :ensure t
+    :hook
+    '((org-mode . org-modern-mode)
+      (org-agenda-finalize . org-modern-agenda))
+    :custom
+    (org-modern-hide-starts nil)
+    (org-modern-table nil)
+    (org-modern-list
+     '((?* . "•")
+       (?+ . "‣")))
+    (set-face-attribute 'org-modern-symbol nil :family "JetBrainsMono Nerd Font"))
 #+END_SRC
 

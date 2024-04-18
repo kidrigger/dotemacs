@@ -7,3 +7,4 @@ org-persist/
 eshell/
 config.el
 history
+eln-cache/
