@@ -104,6 +104,7 @@ The splash screen is kinda cringe. Might change it later though.
 #+END_SRC
 
 *** Allow Y/N instead of Yes/No
+How hard is it to really make simplicity default?
 
 #+BEGIN_SRC emacs-lisp
   (use-package emacs
@@ -129,6 +130,7 @@ The splash screen is kinda cringe. Might change it later though.
 
 *** Use spaces but configure tab-width
 Go mode needs tabs. Use spaces otherwise.
+I don't think I'll ever use ~golang~ but it never hurts to be safe.
 
 #+BEGIN_SRC emacs-lisp
   (use-package emacs
@@ -172,6 +174,15 @@ Support opening new minibuffers from inside existing minibuffers.
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
   #+END_SRC
 * Keybinding
+** Normal Generic Bindings
+Some bindings for random things that will make sense in context of Meow for usability.
+
+~SPC w (C-c w)~ to write instead of ~SPC x s (C-x C-s)~
+#+BEGIN_SRC emacs-lisp
+  (use-package emacs
+    :bind
+    (("C-c w" . save-buffer)))
+#+END_SRC
 ** Meow
 Modal editing is superior to ...whatever the hell emacs has.
 Meow is nice, not as weird as evil.
@@ -180,90 +191,93 @@ Meow is keybind agnostic so we use QWERTY command layout default. (For now)
 
 #+BEGIN_SRC emacs-lisp
   (defun meow-setup ()
-  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
-  (meow-motion-overwrite-define-key
-   '("j" . meow-next)
-   '("k" . meow-prev)
-   '("<escape>" . ignore))
-  (meow-leader-define-key
-   ;; SPC j/k will run the original command in MOTION state.
-   '("j" . "H-j")
-   '("k" . "H-k")
-   ;; Use SPC (0-9) for digit arguments.
-   '("1" . meow-digit-argument)
-   '("2" . meow-digit-argument)
-   '("3" . meow-digit-argument)
-   '("4" . meow-digit-argument)
-   '("5" . meow-digit-argument)
-   '("6" . meow-digit-argument)
-   '("7" . meow-digit-argument)
-   '("8" . meow-digit-argument)
-   '("9" . meow-digit-argument)
-   '("0" . meow-digit-argument)
-   '("/" . meow-keypad-describe-key)
-   '("?" . meow-cheatsheet))
-  (meow-normal-define-key
-   '("0" . meow-expand-0)
-   '("9" . meow-expand-9)
-   '("8" . meow-expand-8)
-   '("7" . meow-expand-7)
-   '("6" . meow-expand-6)
-   '("5" . meow-expand-5)
-   '("4" . meow-expand-4)
-   '("3" . meow-expand-3)
-   '("2" . meow-expand-2)
-   '("1" . meow-expand-1)
-   '("-" . negative-argument)
-   '(";" . meow-reverse)
-   '("," . meow-inner-of-thing)
-   '("." . meow-bounds-of-thing)
-   '("[" . meow-beginning-of-thing)
-   '("]" . meow-end-of-thing)
-   '("a" . meow-append)
-   '("A" . meow-open-below)
-   '("b" . meow-back-word)
-   '("B" . meow-back-symbol)
-   '("c" . meow-change)
-   '("d" . meow-delete)
-   '("D" . meow-backward-delete)
-   '("e" . meow-next-word)
-   '("E" . meow-next-symbol)
-   '("f" . meow-find)
-   '("g" . meow-cancel-selection)
-   '("G" . meow-grab)
-   '("h" . meow-left)
-   '("H" . meow-left-expand)
-   '("i" . meow-insert)
-   '("I" . meow-open-above)
-   '("j" . meow-next)
-   '("J" . meow-next-expand)
-   '("k" . meow-prev)
-   '("K" . meow-prev-expand)
-   '("l" . meow-right)
-   '("L" . meow-right-expand)
-   '("m" . meow-join)
-   '("n" . meow-search)
-   '("o" . meow-block)
-   '("O" . meow-to-block)
-   '("p" . meow-yank)
-   '("q" . meow-quit)
-   '("Q" . meow-goto-line)
-   '("r" . meow-replace)
-   '("R" . meow-swap-grab)
-   '("s" . meow-kill)
-   '("t" . meow-till)
-   '("u" . meow-undo)
-   '("U" . meow-undo-in-selection)
-   '("v" . meow-visit)
-   '("w" . meow-mark-word)
-   '("W" . meow-mark-symbol)
-   '("x" . meow-line)
-   '("X" . meow-goto-line)
-   '("y" . meow-save)
-   '("Y" . meow-sync-grab)
-   '("z" . meow-pop-selection)
-   '("'" . repeat)
-   '("<escape>" . ignore)))
+    (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+    (meow-motion-overwrite-define-key
+     '("j" . meow-next)
+     '("k" . meow-prev)
+     '("<escape>" . ignore))
+    (meow-leader-define-key
+     ;; SPC j/k will run the original command in MOTION state.
+     '("j" . "H-j")
+     '("k" . "H-k")
+     ;; Use SPC (0-9) for digit arguments.
+     '("1" . meow-digit-argument)
+     '("2" . meow-digit-argument)
+     '("3" . meow-digit-argument)
+     '("4" . meow-digit-argument)
+     '("5" . meow-digit-argument)
+     '("6" . meow-digit-argument)
+     '("7" . meow-digit-argument)
+     '("8" . meow-digit-argument)
+     '("9" . meow-digit-argument)
+     '("0" . meow-digit-argument)
+     '("/" . meow-keypad-describe-key)
+     '("?" . meow-cheatsheet))
+    (meow-normal-define-key
+     '("0" . meow-expand-0)
+     '("9" . meow-expand-9)
+     '("8" . meow-expand-8)
+     '("7" . meow-expand-7)
+     '("6" . meow-expand-6)
+     '("5" . meow-expand-5)
+     '("4" . meow-expand-4)
+     '("3" . meow-expand-3)
+     '("2" . meow-expand-2)
+     '("1" . meow-expand-1)
+     '("-" . negative-argument)
+     '(";" . meow-reverse)
+     '("," . meow-inner-of-thing)
+     '("." . meow-bounds-of-thing)
+     '("[" . meow-beginning-of-thing)
+     '("]" . meow-end-of-thing)
+     '("a" . meow-append)
+     '("A" . meow-open-below)
+     '("b" . meow-back-word)
+     '("B" . meow-back-symbol)
+     '("c" . meow-change)
+     '("d" . meow-delete)
+     '("D" . meow-backward-delete)
+     '("e" . meow-next-word)
+     '("E" . meow-next-symbol)
+     '("f" . meow-find)
+     '("g" . meow-cancel-selection)
+     '("G" . meow-grab)
+     '("h" . meow-left)
+     '("H" . meow-left-expand)
+     '("i" . meow-insert)
+     '("I" . meow-open-above)
+     '("j" . meow-next)
+     '("J" . meow-next-expand)
+     '("k" . meow-prev)
+     '("K" . meow-prev-expand)
+     '("l" . meow-right)
+     '("L" . meow-right-expand)
+     '("m" . meow-join)
+     '("n" . meow-search)
+     '("o" . meow-block)
+     '("O" . meow-to-block)
+     '("p" . meow-yank)
+     '("q" . meow-quit)
+     '("Q" . meow-goto-line)
+     '("r" . meow-replace)
+     '("R" . meow-swap-grab)
+     '("s" . meow-kill)
+     '("t" . meow-till)
+     '("u" . meow-undo)
+     '("U" . meow-undo-in-selection)
+     '("v" . meow-visit)
+     '("w" . meow-mark-word)
+     '("W" . meow-mark-symbol)
+     '("x" . meow-line)
+     '("X" . consult-goto-line)
+     '("y" . meow-save)
+     '("Y" . meow-sync-grab)
+     '("z" . meow-pop-selection)
+     '("/" . consult-line)
+     '("?" . consult-ripgrep)
+     '(":" . consult-goto-line)
+     '("'" . repeat)
+     '("<escape>" . ignore)))
 #+END_SRC
 
 *** Installation and Config
@@ -374,8 +388,42 @@ Install Mood Line and configure the format etc.
 #+END_SRC
 
 * General Emacs Task Packages
-** TODO Searching
-** Minibuffer
+** Source Control (Magit)
+Well, I use Magit. It just works!
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t
+    :bind
+    (("C-M-g" . magit-status))
+    :config
+    (define-key magit-mode-map "!" 'magit-dispatch))
+#+END_SRC
+
+** Completion
+*** In-place Completion (Corfu)
+~corfu~ is COmpletion in Region FUnction.
+This provides in-buffer completion.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package corfu
+    :ensure t
+    :init
+    (global-corfu-mode)
+    :custom
+    (corfu-auto t)
+    (confu-quit-no-match 'separator))
+#+END_SRC
+
+We will also need to redo the autocomplete with the ~TAB~.
+Indentation and autocomplate both use ~TAB~ key. We don't want to do ~ALT TAB~ for that.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package emacs
+    :init
+    (setq tab-always-indent 'complete))
+#+END_SRC
+
 *** Interactive Completion (Vertico)
 Using vertico to provide eager completion for the minibuffer options.
 Without vertico, I need to input, press TAB, hope it is right and then rinse and repeat.
@@ -416,12 +464,62 @@ Secondly, it's better to have my buffers and bookmarks etc be opened from the sa
 
 *TODO(Bob):* Can add more bindings to consult commands. e.g. ~consult-line~, ~meow-visit~
 
+~consult-line~ -> "/"
+~consult-ripgrep~ -> "?"
+~consult-goto-line~ -> "X" and ":"
+
 #+BEGIN_SRC emacs-lisp
-    (use-package consult
+      (use-package consult
+        :ensure t
+        :bind
+        (("C-c b" . consult-buffer)
+         ("C-x C-b" . consult-buffer)))
+#+END_SRC
+
+*** Orderless searching (Orderless)
+Currently things try matching from the start, in-order.
+~orderless~ matches on a word-by-word basis.
+i.e.
+#+BEGIN_EXAMPLE
+insta carg
+#+END_EXAMPLE
+
+can match with
+
+#+BEGIN_EXAMPLE
+cargo install
+#+END_EXAMPLE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+#+END_SRC
+
+** Checking
+*** Syntax Checking (Flycheck)
+Inline and hover responses to errors in my code.
+Obviously I'd hate to see any but truth is difficult to swallow.
+
+Also, configuring the binding for the ~eglot~ code action that will inevitably follow.
+
+#+BEGIN_SRC emacs-lisp
+    (use-package flycheck
       :ensure t
-      :bind (
-             ("C-x C-b" . consult-buffer)
-             ("C-c l" . consult-goto-line)))
+      :bind
+      (("C-c e e" . consult-flycheck)
+       ("C-c e a" . eglot-code-actions))
+      :init
+      (global-flycheck-mode))
+#+END_SRC
+
+I'm using ~consult~ so ofc, I need to integrate ~flycheck~ in it.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package consult-flycheck
+    :ensure t)
 #+END_SRC
 
 * Use-specific configs
@@ -483,3 +581,55 @@ Finally, ~org-modern~ to actually add all the prettyfication
     (set-face-attribute 'org-modern-symbol nil :family "JetBrainsMono Nerd Font"))
 #+END_SRC
 
+** Rust
+So, ~rust~ is one of my favorite languages, so obviously, it has to be installed.
+There are two options, ~rust-mode~ and ~rustic-mode~.
+
+Since I've decided to use ~eglot~, ~rust-mode~ is preferred (and plays nice.)
+Perhaps if it causes me pain, I'll switch it later.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rust-mode
+    :ensure t
+    ;; :custom
+    ;; (rust-mode-treesitter-derive t)
+    :hook
+    (rust-mode . (lambda ()
+                   (setq flycheck-checker 'rust-clippy)
+                   (eglot-ensure)
+                   (setq indent-tabs-mode nil))))
+#+END_SRC
+
+Next, I need ~cargo-mode~ so that I can just build and execute from inside emacs.
+Really, who wants to leave emacs?
+
+Somehow, ~cargo-mode~ doesn't contain ~cargo run~. Ofcourse, I want it. So I want to add a custom keymap.
+Luckily, ~rust-mode~ already contains a good way to run. Will just add that function to the keymap.
+#+BEGIN_SRC emacs-lisp
+  (defcustom cargo-mode-command-run "run"
+    "Subcommand used by `cargo-mode-run'."
+    :type 'string
+    :group 'cargo-mode)
+
+  (defun cargo-mode-run (&optional prefix)
+    "Run the `cargo run` command.
+    If PREFIX is non-nil, prompt for additional params."
+      (interactive "P")
+      (let ((project-root (cargo-mode--project-directory)))
+        (cargo-mode--start "execute" cargo-mode-command-run project-root prefix)))
+#+END_SRC
+
+Finally, I actually can configure this package, with additional ~define-key~ to add ~cargo run~ into the keymap.
+#+BEGIN_SRC emacs-lisp
+  (use-package cargo-mode
+    :ensure t
+    :hook
+    (rust-mode . cargo-minor-mode)
+    :bind
+    (("C-c a" . cargo-mode-command-map))
+    :custom
+    (cargo-mode-use-comint nil)
+    (compilation-scroll-output t)
+    :config
+    (define-key cargo-mode-command-map (kbd "r") 'cargo-mode-run))
+#+END_SRC
