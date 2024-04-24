@@ -1,4 +1,9 @@
-;; Early Init file
+;;; package -- Summary
+
+;;; Commentary:
+;;; Kidrigger's Early Init
+
+;;; Code:
 
 ;; UI changes
 (push '(menu-bar-lines . 0) default-frame-alist)
@@ -15,3 +20,6 @@
 ;; Add default font
 (add-to-list 'default-frame-alist
              '(font . "FiraCode Nerd Font Mono-10"))
+
+(provide 'early-init)
+;;; early-init.el ends here

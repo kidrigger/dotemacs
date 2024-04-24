@@ -66,6 +66,16 @@ Setting up elpaca use-package support.
   (elpaca-wait)
 #+END_SRC
 
+** No Littering
+Emacs creates a lot of (useful) garbage everywhere ~file~~, ~#file#~, and ~$HOME~ etc. (eww)
+~no-littering~ helps keep our noses clean.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package no-littering
+    :ensure t
+    :demand t)
+#+END_SRC
+
 ** Default Settings
 *** Remove UI Elements
 I don't need the menus etc. I'll use the shortcuts everywhere.
@@ -86,6 +96,14 @@ File Open dialog is suppressed. Might want to suppress all dialog boxes later.
 #+BEGIN_SRC emacs-lisp
   (setq use-file-dialog nil)
   ; (setq use-dialog-box nil)
+#+END_SRC
+
+*** Saved Customizations
+I don't want my ~init.el~ to be polluted by the saved customizations from emacs.
+Adding all that to a separate ~customizations.el~ file.
+
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file (expand-file-name "customizations.el" user-emacs-directory))
 #+END_SRC
 
 *** Startup Configuration
@@ -181,7 +199,8 @@ Some bindings for random things that will make sense in context of Meow for usab
 #+BEGIN_SRC emacs-lisp
   (use-package emacs
     :bind
-    (("C-c w" . save-buffer)))
+    (:map mode-specific-map
+          ("w" . save-buffer)))
 #+END_SRC
 ** Meow
 Modal editing is superior to ...whatever the hell emacs has.
@@ -282,6 +301,9 @@ Meow is keybind agnostic so we use QWERTY command layout default. (For now)
 
 *** Installation and Config
 
+Actually install ~meow~ and set it up.
+For the reasons of /correctness/, we must wait after, in order to ensure all the next packages bind correctly.
+
 #+BEGIN_SRC emacs-lisp
   (use-package meow
     :ensure t
@@ -289,12 +311,14 @@ Meow is keybind agnostic so we use QWERTY command layout default. (For now)
     :config
     (meow-setup)
     (meow-global-mode 1))
+
+  (elpaca-wait)
 #+END_SRC
+
 * RICE
 ** Font config
 Fonts are rather important to how things look
-
-First, add ~unicode-fonts~
+Then add ~unicode-fonts~ to fill up the rest.
 
 #+BEGIN_SRC emacs-lisp
   (use-package unicode-fonts
@@ -302,13 +326,25 @@ First, add ~unicode-fonts~
     :demand t 
     :config
     (unicode-fonts-setup))
-  #+END_SRC
-
-  #+BEGIN_SRC emacs-lisp
-    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono")
-    (set-face-attribute 'mode-line nil :family "JetBrainsMono Nerd Font Mono" :weight 'bold)
-    (set-face-attribute 'variable-pitch nil :family "JetBrainsMono Nerd Font")
 #+END_SRC
+
+First, set these up.
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'default nil :family "FiraCode Nerd Font")
+  (set-face-attribute 'italic nil :family "JetBrainsMono NF" :slant 'italic :underline nil)
+  (set-face-attribute 'mode-line nil :family "FiraCode Nerd Font" :weight 'bold)
+  (set-face-attribute 'variable-pitch nil :family "FiraCode Nerd Font")
+#+END_SRC
+
+*** Font Test
+Regular
+/Italic/
+*Bold*
+_Underline_
+~code~
++StrikeThrough+
+=verbatim=
+:emoji:
 
 ** Theme (Catpuccin)
 Catpuccing really looks nice, so that shall be the main for now.
@@ -388,6 +424,61 @@ Install Mood Line and configure the format etc.
 #+END_SRC
 
 * General Emacs Task Packages
+** Project.el
+Using updated ~project.el~ instead of the built-in one.
+But will use customized roots instead of the ~vc~ based ones.
+
+Based on [[https://andreyor.st/posts/2022-07-16-project-el-enhancements/][this blog]] about enhancements.
+
+These are the list of files to look out for as ~root~
+
+#+BEGIN_SRC emacs-lisp
+  (defcustom project-root-markers
+    '("Cargo.toml" ; Rust
+      "SConstruct" ; C/C++
+      "project.clj"; Clojure
+      ".git" )     ; Else
+    "Files or directories that indicate the root of a project."
+    :type '(repeat string)
+    :group 'project)
+#+END_SRC
+
+Predicate for finding project root.
+
+#+BEGIN_SRC emacs-lisp
+  (defun project-root-p (path)
+    "Check if the current PATH has any of the project root markers."
+    (catch 'found
+      (dolist (marker project-root-markers)
+        (when (file-exists-p (concat path marker))
+          (throw 'found marker)))))
+#+END_SRC
+
+Function that finds project root.
+NOTE: ~locate-dominating-file~ can find a file or predicate in the path upwards.
+
+#+BEGIN_SRC emacs-lisp
+  (defun project-find-root (path)
+    "Search up the PATH for `project-root-markers'."
+    (when-let ((root (locate-dominating-file path #'project-root-p)))
+      (cons 'transient (expand-file-name root))))
+#+END_SRC
+
+Finally, update ~project.el~ and configure bindings.
+~project-prefix-map~ somehow doesn't let me bind correctly as a keymap. /lame/
+
+#+BEGIN_SRC emacs-lisp
+  (use-package project
+    :ensure t
+    :bind
+    (("C-c p p" . project-switch-project)
+     ("C-c p f" . project-find-file)
+     ("C-c p b" . consult-project-buffer)
+     ("C-c p d" . project-dired))
+    :config
+    (add-to-list 'project-find-functions #'project-find-root))
+#+END_SRC
+
 ** Source Control (Magit)
 Well, I use Magit. It just works!
 
@@ -405,6 +496,8 @@ Well, I use Magit. It just works!
 ~corfu~ is COmpletion in Region FUnction.
 This provides in-buffer completion.
 
+~TAB~ only completion is better since sometimes I need ~RET~ despite not wanting a completion.
+
 #+BEGIN_SRC emacs-lisp
   (use-package corfu
     :ensure t
@@ -412,7 +505,11 @@ This provides in-buffer completion.
     (global-corfu-mode)
     :custom
     (corfu-auto t)
-    (confu-quit-no-match 'separator))
+    (corfu-preselect 'directory)
+    (confu-quit-no-match 'separator)
+    :bind
+    (:map corfu-map
+          ("RET" . nil)))
 #+END_SRC
 
 We will also need to redo the autocomplete with the ~TAB~.
@@ -458,7 +555,7 @@ This pairs with [[*Interactive Completion (Vertico)][Vertico]]
     (marginalia-mode))
 #+END_SRC
 
-*** TODO Preview (Consult)
+*** Preview (Consult)
 It's better to see before you do something.
 Secondly, it's better to have my buffers and bookmarks etc be opened from the same panel since I can't even remeber where I put my beers.
 
@@ -469,11 +566,11 @@ Secondly, it's better to have my buffers and bookmarks etc be opened from the sa
 ~consult-goto-line~ -> "X" and ":"
 
 #+BEGIN_SRC emacs-lisp
-      (use-package consult
-        :ensure t
-        :bind
-        (("C-c b" . consult-buffer)
-         ("C-x C-b" . consult-buffer)))
+  (use-package consult
+    :ensure t
+    :bind
+    (("C-c b" . consult-buffer)
+     ("C-x C-b" . consult-buffer)))
 #+END_SRC
 
 *** Orderless searching (Orderless)
@@ -524,6 +621,7 @@ I'm using ~consult~ so ofc, I need to integrate ~flycheck~ in it.
 
 * Use-specific configs
 ** Org Mode
+
 Org mode is a gem to write all kinds of markup. Including this file XD
 *** Org Settings
 Basic settings that use some of the ligatures and glyphs from the nerdfonts.
@@ -582,6 +680,7 @@ Finally, ~org-modern~ to actually add all the prettyfication
 #+END_SRC
 
 ** Rust
+
 So, ~rust~ is one of my favorite languages, so obviously, it has to be installed.
 There are two options, ~rust-mode~ and ~rustic-mode~.
 
@@ -620,16 +719,18 @@ Luckily, ~rust-mode~ already contains a good way to run. Will just add that func
 #+END_SRC
 
 Finally, I actually can configure this package, with additional ~define-key~ to add ~cargo run~ into the keymap.
+Need to custom bind ~cargo-mode-command-map~ to ~C-c a~ because meow doesn't seem to pick it up
+(It's bound directly instead of to the ~mode-specific-map~
+
 #+BEGIN_SRC emacs-lisp
   (use-package cargo-mode
     :ensure t
     :hook
     (rust-mode . cargo-minor-mode)
-    :bind
-    (("C-c a" . cargo-mode-command-map))
+    :bind (("C-c a" . cargo-mode-command-map)
+           :map cargo-mode-command-map
+           ("r" . cargo-mode-run))
     :custom
     (cargo-mode-use-comint nil)
-    (compilation-scroll-output t)
-    :config
-    (define-key cargo-mode-command-map (kbd "r") 'cargo-mode-run))
+    (compilation-scroll-output t))
 #+END_SRC
