@@ -679,6 +679,38 @@ Finally, ~org-modern~ to actually add all the prettyfication
     (set-face-attribute 'org-modern-symbol nil :family "JetBrainsMono Nerd Font"))
 #+END_SRC
 
+** Org Roam
+
+While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since the featureset is that much special.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-roam
+    :ensure t
+    :custom
+    (org-roam-directory (file-truename "~/Documents/org"))
+    (org-roam-database-connector 'sqlite-builtin)
+    (org-roam-capture-templates
+        '(("m" "main" plain
+           "%?"
+           :if-new (file+head "main/${slug}.org"
+                              "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)))     
+    (org-roam-node-display-template
+     (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+    :init
+    (org-roam-db-autosync-mode)
+    :config
+    (cl-defmethod org-roam-node-type ((node org-roam-node))
+      "Return the TYPE of NODE."
+      (condition-case nil
+          (file-name-nondirectory
+           (directory-file-name
+            (file-name-directory
+             (file-relative-name (org-roam-node-file node) org-roam-directory))))
+        (error ""))))
+#+END_SRC
+
 ** Rust
 
 So, ~rust~ is one of my favorite languages, so obviously, it has to be installed.
