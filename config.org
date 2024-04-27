@@ -482,6 +482,14 @@ Finally, update ~project.el~ and configure bindings.
 ** Source Control (Magit)
 Well, I use Magit. It just works!
 
+But first, I need to upgrade ~transient~ in case the old one gives a BT.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package transient
+    :ensure t
+    :demand t)
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t
@@ -765,4 +773,19 @@ Need to custom bind ~cargo-mode-command-map~ to ~C-c a~ because meow doesn't see
     :custom
     (cargo-mode-use-comint nil)
     (compilation-scroll-output t))
+#+END_SRC
+
+** Nix
+Since I've started to realize how well a reliable system like NixOS can handle my stuff, the ~nix~ language definitely needs support.
+
+First, Install the beautiful ~nix-mode~ package.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package nix-mode
+    :ensure t
+    :after eglot
+    :hook
+    (nix-mode . eglot-ensure)
+    :config
+    (add-to-list 'eglot-server-programs '(nix-mode . ("nil"))))
 #+END_SRC
