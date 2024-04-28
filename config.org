@@ -779,10 +779,13 @@ Need to custom bind ~cargo-mode-command-map~ to ~C-c a~ because meow doesn't see
 Since I've started to realize how well a reliable system like NixOS can handle my stuff, the ~nix~ language definitely needs support.
 
 First, Install the beautiful ~nix-mode~ package.
+I won't be using ~nix~ outside ~NixOS~.
+So, I have no need to install ~nil~ and ~nix-mode~ on those.
 
 #+BEGIN_SRC emacs-lisp
   (use-package nix-mode
     :ensure t
+    :if (executable-find "nil")
     :after eglot
     :hook
     (nix-mode . eglot-ensure)
