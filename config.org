@@ -310,6 +310,7 @@ For the reasons of /correctness/, we must wait after, in order to ensure all the
     :ensure t
     :demand t
     :custom
+    (meow-keypad-leader-dispatch "C-c")
     (meow-keypad-self-insert-undefined nil)
     :config
     (meow-setup)
@@ -350,7 +351,9 @@ _Underline_
 :emoji:
 
 ** Theme (Catpuccin)
-Catpuccing really looks nice, so that shall be the main for now.
+
+I'm using ~meow~ for keybinds. It will be *wrong* to use anything but ~catpuccin~ for the theme.
+~catpuccin~ looks nice too, so that shall be the main for now.
 
 #+BEGIN_SRC emacs-lisp
   (use-package catppuccin-theme
@@ -667,11 +670,11 @@ Make org belong to the current era.
 
 *Note:* ~org-modern~ indentation is a bit broken for the source blocks. Thus, a simple solution:
 #+BEGIN_SRC emacs-lisp
-     (use-package org-modern-indent
-      :ensure (org-modern-indent :type git :host github :repo "jdtsmith/org-modern-indent")
-      :config
-      (add-hook 'org-mode-hook #'org-modern-indent-mode 90)
-      (setq org-startup-indented t))
+  (use-package org-modern-indent
+    :ensure (org-modern-indent :type git :host github :repo "jdtsmith/org-modern-indent")
+    :config
+    (add-hook 'org-mode-hook #'org-modern-indent-mode 90)
+    (setq org-startup-indented t))
 #+END_SRC
 
 Finally, ~org-modern~ to actually add all the prettyfication
@@ -770,7 +773,8 @@ Need to custom bind ~cargo-mode-command-map~ to ~C-c a~ because meow doesn't see
     :ensure t
     :hook
     (rust-mode . cargo-minor-mode)
-    :bind (("C-c a" . cargo-mode-command-map)
+    :bind (:map cargo-mode-map
+           ("C-c a" . cargo-mode-command-map)
            :map cargo-mode-command-map
            ("r" . cargo-mode-run))
     :custom
