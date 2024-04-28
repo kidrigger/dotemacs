@@ -799,3 +799,27 @@ So, I have no need to install ~nil~ and ~nix-mode~ on those.
     :config
     (add-to-list 'eglot-server-programs '(nix-mode . ("nil"))))
 #+END_SRC
+** TODO Common Lisp (CLISP)
+
+I have quite fallen into love with this language. Really, this is the absolute definition of [[https://tenor.com/view/spy-x-family-elegant-elegance-gif-3561089886890940443][Elegant!]]
+
+With the REPL and everything, it is best to use ~sly~ with ~roswell~ as the underlying setup.
+Specifically, I'll be using ~sbcl~, but under ~roswell~ since that allows me to install and use other common lisp implementations.
+
+But I hardly ever manage to do these uniformly, so I'll create a set of fallbacks.
+
+#+BEGIN_SRC emacs-lisp
+  (setq kr-clisp-impl
+        (or (let ((ros-path (executable-find "ros")))
+              (when ros-path
+                (format "%s run" ros-path)))
+            (executable-find "sbcl")))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package sly
+    :ensure t
+    :if kr-clisp-impl
+    :custom
+    (inferior-lisp-program kr-clisp-impl))
+#+END_SRC
