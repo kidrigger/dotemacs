@@ -1,4 +1,4 @@
- #+TITLE: Kidrigger's Literate GNU Emacs Config
+#+TITLE: Kidrigger's Literate GNU Emacs Config
 #+AUTHOR: Anish Bhobe
 #+EMAIL: anishbhobe@hotmail.com
 #+STARTUP: show2levels
@@ -219,6 +219,7 @@ Meow is keybind agnostic so we use QWERTY command layout default. (For now)
      ;; SPC j/k will run the original command in MOTION state.
      '("j" . "H-j")
      '("k" . "H-k")
+     '("u" . meow-universal-argument)
      ;; Use SPC (0-9) for digit arguments.
      '("1" . meow-digit-argument)
      '("2" . meow-digit-argument)
@@ -308,6 +309,8 @@ For the reasons of /correctness/, we must wait after, in order to ensure all the
   (use-package meow
     :ensure t
     :demand t
+    :custom
+    (meow-keypad-self-insert-undefined nil)
     :config
     (meow-setup)
     (meow-global-mode 1))
