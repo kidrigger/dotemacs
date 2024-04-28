@@ -804,7 +804,7 @@ So, I have no need to install ~nil~ and ~nix-mode~ on those.
 I have quite fallen into love with this language. Really, this is the absolute definition of [[https://tenor.com/view/spy-x-family-elegant-elegance-gif-3561089886890940443][Elegant!]]
 
 With the REPL and everything, it is best to use ~sly~ with ~roswell~ as the underlying setup.
-Specifically, I'll be using ~sbcl~, but under ~roswell~ since that allows me to install and use other common lisp implementations.
+Specifically, I'll be using ~sbcl~, but under ~roswell~ since that allows me to install and use other ~common-lisp~ implementations.
 
 But I hardly ever manage to do these uniformly, so I'll create a set of fallbacks.
 
@@ -816,10 +816,16 @@ But I hardly ever manage to do these uniformly, so I'll create a set of fallback
             (executable-find "sbcl")))
 #+END_SRC
 
+Configure ~sly~ if we do have a ~common-lisp~ implementation. Also, the ~sly~ REPL should open when in the mode.
+
 #+BEGIN_SRC emacs-lisp
   (use-package sly
     :ensure t
     :if kr-clisp-impl
+    :hook
+    (sly-mode . (lambda ()
+                  (unless (sly-connected-p)
+                    (save-excursion (sly)))))
     :custom
     (inferior-lisp-program kr-clisp-impl))
 #+END_SRC
