@@ -812,7 +812,7 @@ But I hardly ever manage to do these uniformly, so I'll create a set of fallback
   (setq kr-clisp-impl
         (or (let ((ros-path (executable-find "ros")))
               (when ros-path
-                (format "%s run" ros-path)))
+                (format "%s dynamic-space-size=2048 -Q run" ros-path)))
             (executable-find "sbcl")))
 #+END_SRC
 
