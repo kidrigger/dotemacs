@@ -861,6 +861,7 @@ Need to custom bind ~cargo-mode-command-map~ to ~C-c a~ because meow doesn't see
            ("r" . cargo-mode-run))
     :custom
     (cargo-mode-use-comint nil)
+    (rust-format-on-save t)
     (compilation-scroll-output t))
 #+END_SRC
 
@@ -881,6 +882,7 @@ So, I have no need to install ~nil~ and ~nix-mode~ on those.
     :config
     (add-to-list 'eglot-server-programs '(nix-mode . ("nil"))))
 #+END_SRC
+
 ** TODO Common Lisp (CLISP)
 
 I have quite fallen into love with this language. Really, this is the absolute definition of [[https://tenor.com/view/spy-x-family-elegant-elegance-gif-3561089886890940443][Elegant!]]
