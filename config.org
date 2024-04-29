@@ -512,6 +512,37 @@ Install Mood Line and configure the format etc.
 #+END_SRC
 
 * General Emacs Task Packages
+** Dashboard
+
+A little nice dashboard to be shown at startup.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :hook ((elpaca-after-init . dashboard-insert-startupify-lists)
+           (elpaca-after-init . dashboard-initialize))
+    :custom
+    (initial-buffer-choice (lambda ()
+                             (get-buffer-create dashboard-buffer-name)))
+    (dashboard-banner-logo-title "Kidrigger's Emacs!")
+    (dashboard-startup-banner 2)
+    (dashboard-footer-messages '("“Whatever you are, be a good one.” Abraham Lincoln"
+                                 "“Yesterday is history, Tomorrow is a mystery, but today is a gift. That is why it is called the present.” Master Oogway"
+                                 "“Man, never made any material as resilient as the human spirit.” Bernard Williams"
+                                 "“I didn’t fail the test. I just found 100 ways to do it wrong.” Benjamin Franklin"
+                                 "“A person who never made a mistake never tried anything new.” Albert Einstein"
+                                 "“No matter what people tell you, words and ideas can change the world.” Robin Williams"
+                                 "“Be yourself; everyone else is already taken.” Oscar Wilde"
+                                 "“Time is a created thing. To say, “I don’t have time”, is like saying, “I don’t want to.” Lao Tzu"
+                                 "“Never regret anything that made you smile.” Mark Twain"
+                                 "“No act of kindness, no matter how small, is ever wasted.” Aesop"
+                                 "“May your choices reflect your hopes, not your fears.” Nelson Mandela"))
+    (dashboard-center-content t)
+    (dashboard-vertically-center-content t)
+    :config
+    (dashboard-setup-startup-hook))
+#+END_SRC
+
 ** Project.el
 Using updated ~project.el~ instead of the built-in one.
 But will use customized roots instead of the ~vc~ based ones.
