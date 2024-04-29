@@ -838,6 +838,36 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
         (error ""))))
 #+END_SRC
 
+** C/C++
+
+Good ol' ~c~ and ~c++~. These beasts are not going anywhere.
+Unlike the rest, there's no need for ~c-mode~ and ~c++-mode~ packages to be installed.
+So the configuration will occur on ~eglot~'s dime.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package eglot
+    :hook
+    ((c-mode c++-mode) . eglot-ensure)
+    :config
+    (add-to-list 'eglot-server-programs `((c-mode c++-mode) "clangd")))
+#+END_SRC
+
+** Java
+
+You can hate it, you can love it, but you can not avoid it.
+(But you might skip the lsp...)
+
+Will look for the ~jdtls~ LSP server before init.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package eglot
+    :if (executable-find "jdtls")
+    :hook
+    (java-mode . eglot-ensure)
+    :config
+    (add-to-list 'eglot-server-programs '(java-mode "jdtls")))
+#+END_SRC
+
 ** Rust
 
 So, ~rust~ is one of my favorite languages, so obviously, it has to be installed.
@@ -914,7 +944,7 @@ So, I have no need to install ~nil~ and ~nix-mode~ on those.
     (add-to-list 'eglot-server-programs '(nix-mode . ("nil"))))
 #+END_SRC
 
-** TODO Common Lisp (CLISP)
+** Common Lisp (CLISP)
 
 I have quite fallen into love with this language. Really, this is the absolute definition of [[https://tenor.com/view/spy-x-family-elegant-elegance-gif-3561089886890940443][Elegant!]]
 
