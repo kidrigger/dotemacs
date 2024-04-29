@@ -320,6 +320,14 @@ For the reasons of /correctness/, we must wait after, in order to ensure all the
 #+END_SRC
 
 * RICE
+** Transparency
+Lightly transparent stuff always looks cool, especially when you also have blur.
+
+#+BEGIN_SRC emacs-lisp
+  (set-frame-parameter nil 'alpha-background 70)
+  (add-to-list 'default-frame-alist '(alpha-background . 70))
+#+END_SRC
+
 ** Font config
 Fonts are rather important to how things look
 Then add ~unicode-fonts~ to fill up the rest.
