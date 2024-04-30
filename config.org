@@ -195,14 +195,17 @@ Support opening new minibuffers from inside existing minibuffers.
 ** Normal Generic Bindings
 Some bindings for random things that will make sense in context of Meow for usability.
 
-~SPC w (C-c w)~ to write instead of ~SPC x s (C-x C-s)~
+~SPC w~ as a prefix for window management.
+
 #+BEGIN_SRC emacs-lisp
   (use-package emacs
     :bind
     (:map mode-specific-map
-          ("w" . save-buffer)))
+          ("w r" . split-window-right)
+          ("w d" . split-window-below)
+          ("w x" . delete-window)
+          ("w w" . other-window)))
 #+END_SRC
-
 ** Meow
 Modal editing is superior to ...whatever the hell emacs has.
 Meow is nice, not as weird as evil.
