@@ -779,6 +779,15 @@ This will look nice.
 
 #+END_SRC
 
+Bind ~org-create-table~ to easy to access command maps.
+
+#+begin_src emacs-lisp
+  (use-package org-mode
+    :bind (:map org-mode-map
+           ("C-c t c" . org-table-create)
+           ("C-c t a" . org-table-align)))
+#+end_src
+
 *** Org Modern
 Make org belong to the current era.
 
@@ -837,11 +846,13 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
     :init
     (org-roam-db-autosync-mode)
     :bind (:map mode-specific-map
-                ("n r c" . org-roam-capture)
-                ("n r r" . org-roam-refile)
-                ("n r b" . org-roam-buffer-toggle)
-                ("n r f" . org-roam-node-find)) 
+                ("n c" . org-roam-capture)
+                ("n r" . org-roam-refile)
+                ("n b" . org-roam-buffer-toggle)
+                ("n f" . org-roam-node-find)
+                ("n j" . org-roam-dailies-capture-today)) 
     :config
+    (org-roam-db-autosync-mode)
     (cl-defmethod org-roam-node-type ((node org-roam-node))
       "Return the TYPE of NODE."
       (condition-case nil
