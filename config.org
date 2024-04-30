@@ -202,6 +202,7 @@ Some bindings for random things that will make sense in context of Meow for usab
     (:map mode-specific-map
           ("w" . save-buffer)))
 #+END_SRC
+
 ** Meow
 Modal editing is superior to ...whatever the hell emacs has.
 Meow is nice, not as weird as evil.
@@ -806,6 +807,14 @@ Finally, ~org-modern~ to actually add all the prettyfication
     (set-face-attribute 'org-modern-symbol nil :family "JetBrainsMono Nerd Font"))
 #+END_SRC
 
+*** Org Tempo
+
+Write the source blocks in one go!
+
+#+begin_src emacs-lisp
+  (use-package org-tempo)
+#+end_src
+
 ** Org Roam
 
 While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since the featureset is that much special.
@@ -827,6 +836,11 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
     :init
     (org-roam-db-autosync-mode)
+    :bind (:map mode-specific-map
+                ("n r c" . org-roam-capture)
+                ("n r r" . org-roam-refile)
+                ("n r b" . org-roam-buffer-toggle)
+                ("n r f" . org-roam-node-find)) 
     :config
     (cl-defmethod org-roam-node-type ((node org-roam-node))
       "Return the TYPE of NODE."
