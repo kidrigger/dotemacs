@@ -73,7 +73,9 @@ Emacs creates a lot of (useful) garbage everywhere ~file~~, ~#file#~, and ~$HOME
 #+BEGIN_SRC emacs-lisp
   (use-package no-littering
     :ensure t
-    :demand t)
+    :demand t
+    :config
+    (no-littering-theme-backups))
 #+END_SRC
 
 ** Default Settings

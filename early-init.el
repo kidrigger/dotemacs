@@ -21,5 +21,10 @@
 (add-to-list 'default-frame-alist
              '(font . "FiraCode Nerd Font Mono-10"))
 
+(when (fboundp 'startup-redirect-eln-cache)
+  (startup-redirect-eln-cache
+   (convert-standard-filename
+    (expand-file-name  "var/eln-cache/" user-emacs-directory))))
+
 (provide 'early-init)
 ;;; early-init.el ends here
