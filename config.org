@@ -220,6 +220,7 @@ Meow is keybind agnostic so we use QWERTY command layout default. (For now)
     (meow-motion-overwrite-define-key
      '("j" . meow-next)
      '("k" . meow-prev)
+     '(":" . meow-M-x)
      '("<escape>" . ignore))
     (meow-leader-define-key
      ;; SPC j/k will run the original command in MOTION state.
@@ -301,7 +302,7 @@ Meow is keybind agnostic so we use QWERTY command layout default. (For now)
      '("z" . meow-pop-selection)
      '("/" . consult-line)
      '("?" . consult-ripgrep)
-     '(":" . consult-goto-line)
+     '(":" . meow-M-x)
      '("'" . repeat)
      '("<escape>" . ignore)))
 #+END_SRC
