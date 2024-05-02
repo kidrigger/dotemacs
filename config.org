@@ -326,13 +326,22 @@ For the reasons of /correctness/, we must wait after, in order to ensure all the
 #+END_SRC
 
 * RICE
-** Transparency
+** Layout Theming
+*** Transparency
 Lightly transparent stuff always looks cool, especially when you also have blur.
 
 #+BEGIN_SRC emacs-lisp
-  (set-frame-parameter nil 'alpha-background 90)
+  (set-frame-parameter (selected-frame) 'alpha-background 90)
   (add-to-list 'default-frame-alist '(alpha-background . 90))
 #+END_SRC
+
+*** Frame
+Looks nicer to have a little border from the extremities.
+
+#+begin_src emacs-lisp
+  (set-frame-parameter (selected-frame) 'internal-border-width 20)
+  (add-to-list 'default-frame-alist '(internal-border-width . 20))
+#+end_src
 
 ** Font config
 Fonts are rather important to how things look
@@ -594,7 +603,6 @@ Finally, update ~project.el~ and configure bindings.
 
 #+BEGIN_SRC emacs-lisp
   (use-package project
-    :ensure t
     :bind
     (("C-c p p" . project-switch-project)
      ("C-c p f" . project-find-file)
