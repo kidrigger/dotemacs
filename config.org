@@ -462,7 +462,7 @@ I'm using ~meow~ for keybinds. It will be *wrong* to use anything but ~catpuccin
     (load-theme 'catppuccin :no-confirm))
 #+END_SRC
 
-** Modeline (Mood-line)
+** Mode line (Mood-line)
 
 Using ~mood-line~ because it looks pretty. Testing
 Modify the modeline faces with reversed background and foreground.
@@ -531,6 +531,33 @@ Install Mood Line and configure the format etc.
        "  "
        (mood-line-segment-process)))))
 #+END_SRC
+
+** Header line
+
+#+begin_src emacs-lisp
+  (defun kr-buffer-permissions ()
+    "Show the buffer permissions for the current buffer"
+    (cond ((and buffer-read-only (buffer-modified-p)) (propertize " !! " 'face (kr-inverted-color 'font-lock-builtin-face)))
+          (buffer-read-only (propertize " RO " 'face (kr-inverted-color font-lock-string-face)))
+          ((buffer-modified-p) (propertize " <> " 'face (kr-inverted-color 'font-lock-number-face)))
+          (t (propertize " RW " 'face (kr-inverted-color 'font-lock-keyword-face)))))
+
+  (defun kr-header-line ()
+    (let* ((left (concat (kr-buffer-permissions)
+                        " " (make-string (recursion-depth) ?\[)
+                        (or (buffer-file-name) (buffer-name))
+                        " " (make-string (recursion-depth) ?\])))
+           (right (concat (propertize (format-time-string " %F ") 'face (kr-inverted-color 'font-lock-string-face))))
+           (pad-width (- (window-total-width)
+                         (+ (length left)
+                            (length right)))))
+      (concat left (make-string pad-width ?\s) right)))
+
+
+  (use-package emacs
+    :custom
+    (header-line-format '(:eval (kr-header-line))))
+#+end_src
 
 * General Emacs Task Packages
 ** Dashboard
