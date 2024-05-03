@@ -1,3 +1,4 @@
+
 #+TITLE: Kidrigger's Literate GNU Emacs Config
 #+AUTHOR: Anish Bhobe
 #+EMAIL: anishbhobe@hotmail.com
@@ -462,40 +463,44 @@ I'm using ~meow~ for keybinds. It will be *wrong* to use anything but ~catpuccin
 #+END_SRC
 
 ** Modeline (Mood-line)
+
 Using ~mood-line~ because it looks pretty. Testing
-*** Modal Notations
+Modify the modeline faces with reversed background and foreground.
 
-Make each of the modal states show up as color bold 3-letter text
-#+BEGIN_SRC emacs-lisp
-  (setq mood-line-segment-modal-meow-state-alist
-        '((normal . ("NOR" . font-lock-variable-name-face))
-          (insert . ("INS" . font-lock-string-face))
-          (keypad . ("KEY" . font-lock-keyword-face))
-          (beacon . ("BCN" . font-lock-type-face))
-          (motion . ("MOT" . font-lock-constant-face))))
-#+END_SRC
+#+begin_src emacs-lisp
+  (defun kr-inverted-color (face)
+    (list :background (face-foreground face)
+          :foreground (face-background 'mode-line)))
+#+end_src
 
-*** Install Config
-
+Make the modes 3 letter words with the inverted faces.
 Install Mood Line and configure the format etc.
+
 #+BEGIN_SRC emacs-lisp
   (use-package mood-line
     :ensure t
     :demand t
+    :after catppuccin-theme
     :config
     (mood-line-mode)
-    (set-face-attribute 'mode-line nil :family "JetBrainsMono Nerd Font Mono" :weight 'bold)
     :custom
+    (mood-line-segment-modal-meow-state-alist
+          `((normal . (" NOR " . ,(kr-inverted-color font-lock-function-name-face)))
+            (insert . (" INS " . ,(kr-inverted-color font-lock-string-face)))
+            (keypad . (" KEY " . ,(kr-inverted-color font-lock-keyword-face)))
+            (beacon . (" BCN " . ,(kr-inverted-color font-lock-type-face)))
+            (motion . (" MOT " . ,(kr-inverted-color font-lock-constant-face)))))
     (mood-line-glyph-alist mood-line-glyphs-fira-code)
     (mood-line-format
      (mood-line-defformat
       :left
-      ("  " (mood-line-segment-modal) " "
+      ((mood-line-segment-modal) " "
        (or (mood-line-segment-buffer-status)
            (mood-line-segment-client)
            " ")
        " "
-       (and (mood-line-segment-project) "/") (mood-line-segment-buffer-name)
+       (and (mood-line-segment-project) "/")
+       (mood-line-segment-buffer-name)
        "  "
        (mood-line-segment-anzu)
        "  "
@@ -514,9 +519,9 @@ Install Mood Line and configure the format etc.
        (mood-line-segment-eol)
        "  "
        (mood-line-segment-encoding)
-       "  "
+       "  ["
        (mood-line-segment-vc)
-       "  "
+       "]  "
        (mood-line-segment-major-mode)
        "  "
        (mood-line-segment-misc-info)
