@@ -493,42 +493,31 @@ Install Mood Line and configure the format etc.
     (mood-line-glyph-alist mood-line-glyphs-fira-code)
     (mood-line-format
      (mood-line-defformat
+      :padding ""
       :left
       ((mood-line-segment-modal) " "
        (or (mood-line-segment-buffer-status)
            (mood-line-segment-client)
            " ")
-       " "
-       (and (mood-line-segment-project) "/")
+       #(" " 0 1
+         (face mood-line-unimportant))
+       ((mood-line-segment-project) . "/")
        (mood-line-segment-buffer-name)
-       "  "
-       (mood-line-segment-anzu)
-       "  "
-       (mood-line-segment-multiple-cursors)
-       "  "
+       " "
+       ((mood-line-segment-anzu) . " ")
+       ((mood-line-segment-multiple-cursors) . " ")
        (mood-line-segment-cursor-position)
-       ""
        #(" " 0 1
          (face mood-line-unimportant))
        (mood-line-segment-region)
        " "
        (mood-line-segment-scroll))
       :right
-      ((mood-line-segment-indentation)
-       "  "
-       (mood-line-segment-eol)
-       "  "
-       (mood-line-segment-encoding)
-       "  ["
-       (mood-line-segment-vc)
-       "]  "
+      (((mood-line-segment-vc) . " ")
        (mood-line-segment-major-mode)
-       "  "
-       (mood-line-segment-misc-info)
-       "  "
-       (when (mood-line-segment-checker) " | ")
-       (mood-line-segment-checker)
-       "  "
+       " "
+       ((mood-line-segment-misc-info) . " ")
+       ((mood-line-segment-checker) . " ")
        (mood-line-segment-process)))))
 #+END_SRC
 
