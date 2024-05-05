@@ -375,7 +375,8 @@ Some want pearls, some want cars, me, I want /ligatures/.
     :ensure t
     :config
     ;; All modes
-    (ligature-set-ligatures 't '("www" "->" "=>" "!="))
+    (ligature-set-ligatures 't '("www" "->" "<-" "=>" "<=" ">=" "!=" "..."
+                                 ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))))
     ;; Programming only
     (ligature-set-ligatures 'prog-mode
                             '(;; == === ==== => =| =>>=>=|=>==>> ==< =/=//=// =~
@@ -447,7 +448,7 @@ _Underline_
 +StrikeThrough+
 =verbatim=
 :keyword:
-Ligature != -> =>
+Ligature != -> => ... ;; 0x124 0xA1C3E
 
 ** Theme (Catpuccin)
 
