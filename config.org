@@ -209,6 +209,7 @@ Some bindings for random things that will make sense in context of Meow for usab
           ("w x" . delete-window)
           ("w w" . other-window)))
 #+END_SRC
+
 ** Meow
 Modal editing is superior to ...whatever the hell emacs has.
 Meow is nice, not as weird as evil.
@@ -832,6 +833,15 @@ Write the source blocks in one go!
 #+begin_src emacs-lisp
   (use-package org-tempo)
 #+end_src
+
+*** Org Agenda
+
+Add the files from main and daily to org agenda.
+
+#+begin_src emacs-lisp
+  (setq org-agenda-files (mapcar #'file-truename '("~/Documents/org/main" "~/Documents/org/daily")))
+#+end_src
+
 
 ** Org Roam
 
