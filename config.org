@@ -872,6 +872,16 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
         (error ""))))
 #+END_SRC
 
+** Prog Mode
+
+General Programming modes.
+
+#+begin_src emacs-lisp
+  (use-package prog-mode
+    :hook
+    (prog-mode . display-line-numbers-mode))
+#+end_src
+
 ** C/C++
 
 Good ol' ~c~ and ~c++~. These beasts are not going anywhere.
