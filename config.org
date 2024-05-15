@@ -842,7 +842,6 @@ Add the files from main and daily to org agenda.
   (setq org-agenda-files (mapcar #'file-truename '("~/Documents/org/main" "~/Documents/org/daily")))
 #+end_src
 
-
 ** Org Roam
 
 While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since the featureset is that much special.
@@ -861,7 +860,7 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
            :immediate-finish t
            :unnarrowed t)))     
     (org-roam-node-display-template
-     (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+     (concat "${type:10} ${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
     :init
     (org-roam-db-autosync-mode)
     :bind (:map mode-specific-map
@@ -881,6 +880,34 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
              (file-relative-name (org-roam-node-file node) org-roam-directory))))
         (error ""))))
 #+END_SRC
+
+*** Consult Integration
+
+#+begin_src emacs-lisp
+  (use-package consult-org-roam
+    :ensure t
+    :after org-roam
+    :custom
+    (consult-org-roam-grep-func #'consult-ripgrep)
+    ;; Configure a custom narrow key for `consult-buffer'
+    (consult-org-roam-buffer-narrow-key ?r)
+    ;; Display org-roam buffers right after non-org-roam buffers
+    ;; in consult-buffer (and not down at the bottom)
+    (consult-org-roam-buffer-after-buffers t)
+    :config
+    (consult-org-roam-mode 1)
+    ;; Eventually suppress previewing for certain functions
+    (consult-customize
+     consult-org-roam-forward-links
+     :preview-key "M-.")
+    :bind
+    ;; Define some convenient keybindings as an addition
+    ("C-c n e" . consult-org-roam-file-find)
+    ("C-c n b" . consult-org-roam-backlinks)
+    ("C-c n B" . consult-org-roam-backlinks-recursive)
+    ("C-c n l" . consult-org-roam-forward-links)
+    ("C-c n s" . consult-org-roam-search))
+#+end_src
 
 ** Prog Mode
 
