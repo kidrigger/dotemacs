@@ -376,7 +376,7 @@ Some want pearls, some want cars, me, I want /ligatures/.
     :ensure t
     :config
     ;; All modes
-    (ligature-set-ligatures 't '("www" "->" "<-" "=>" "<=" ">=" "!=" "..."
+    (ligature-set-ligatures 't '("www" "->" "<-" "=>" "<->" "<=>" "<=" ">=" "!=" "..."
                                  ("0" (rx (and "x" (+ (in "A-F" "a-f" "0-9")))))))
     ;; Programming only
     (ligature-set-ligatures 'prog-mode
@@ -764,6 +764,7 @@ Org mode is a gem to write all kinds of markup. Including this file XD
 *** Org Settings
 Basic settings that use some of the ligatures and glyphs from the nerdfonts.
 This will look nice.
+
 #+BEGIN_SRC emacs-lisp
   (setq
    ;; Edit settings
@@ -785,7 +786,9 @@ This will look nice.
      (800 1000 1200 1400 1600 1800 2000)
      " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
    org-agenda-current-time-string
-   "◀── now ─────────────────────────────────────────────────")
+   "◀── now ─────────────────────────────────────────────────"
+   org-agenda-skip-deadline-if-done t
+   org-agenda-skip-scheduled-if-done t)
 
 #+END_SRC
 
@@ -800,15 +803,6 @@ Bind ~org-create-table~ to easy to access command maps.
 
 *** Org Modern
 Make org belong to the current era.
-
-*Note:* ~org-modern~ indentation is a bit broken for the source blocks. Thus, a simple solution:
-#+BEGIN_SRC emacs-lisp
-  (use-package org-modern-indent
-    :ensure (org-modern-indent :type git :host github :repo "jdtsmith/org-modern-indent")
-    :config
-    (add-hook 'org-mode-hook #'org-modern-indent-mode 90)
-    (setq org-startup-indented t))
-#+END_SRC
 
 Finally, ~org-modern~ to actually add all the prettyfication
 #+BEGIN_SRC emacs-lisp
@@ -825,6 +819,12 @@ Finally, ~org-modern~ to actually add all the prettyfication
        (?+ . "‣")))
     (set-face-attribute 'org-modern-symbol nil :family "JetBrainsMono Nerd Font"))
 #+END_SRC
+
+#+begin_src emacs-lisp
+  (use-package org-mode
+    :hook
+    (org-mode . org-num-mode))
+#+end_src
 
 *** Org Tempo
 
