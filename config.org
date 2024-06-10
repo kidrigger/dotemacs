@@ -1055,3 +1055,19 @@ Configure ~sly~ if we do have a ~common-lisp~ implementation. Also, the ~sly~ RE
     :custom
     (inferior-lisp-program kr-clisp-impl))
 #+END_SRC
+
+** Zotero Integration
+
+Zotero is nice for managing everything.
+Documentation for the plugin is [[https://github.com/emacsmirror/zotxt][here]]
+
+#+begin_src emacs-lisp
+  (use-package zotxt
+    :ensure t)
+#+end_src
+
+Adds the bindings on prefix
+~SPC "~
++ ~i~ Insert
++ ~u~ Update
++ ~a~ Open
