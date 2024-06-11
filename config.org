@@ -566,6 +566,7 @@ These are the list of files to look out for as ~root~
 #+BEGIN_SRC emacs-lisp
   (defcustom project-root-markers
     '("Cargo.toml" ; Rust
+      "compile_commands.json" ; clangd c/c++
       "SConstruct" ; C/C++
       "project.clj"; Clojure
       ".git" )     ; Else
@@ -847,6 +848,16 @@ Also, configuring the binding for the ~eglot~ code action that will inevitably f
       (global-flycheck-mode))
 #+END_SRC
 
+Also, combine them together ~eglot~ to ~flycheck~ is a 'tricky' situation. So use a package.
+
+#+begin_src emacs-lisp
+  (use-package flycheck-eglot
+    :ensure t
+    :after (flycheck eglot)
+    :config
+    (global-flycheck-eglot-mode 1))
+#+end_src
+
 I'm using ~consult~ so ofc, I need to integrate ~flycheck~ in it.
 
 #+BEGIN_SRC emacs-lisp
@@ -1063,6 +1074,8 @@ Good ol' ~c~ and ~c++~. These beasts are not going anywhere.
 Unlike the rest, there's no need for ~c-mode~ and ~c++-mode~ packages to be installed.
 So the configuration will occur on ~eglot~'s dime.
 
+Configuring this to work with CMake
+
 #+BEGIN_SRC emacs-lisp
   (use-package eglot
     :hook
@@ -1070,6 +1083,20 @@ So the configuration will occur on ~eglot~'s dime.
     :config
     (add-to-list 'eglot-server-programs `((c-mode c++-mode) "clangd")))
 #+END_SRC
+
+Refactoring support
+
+#+begin_src emacs-lisp
+  (use-package srefactor
+    :ensure t
+    :bind (:map c-mode-map
+                ("C-<return>" . srefactor-refactor-at-point)
+           :map c++-mode-map
+                ("C-<return>" . srefactor-refactor-at-point))
+    :config
+    (semantic-mode 1))
+  
+#+end_src
 
 ** Java
 
