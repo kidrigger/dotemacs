@@ -598,6 +598,8 @@ NOTE: ~locate-dominating-file~ can find a file or predicate in the path upwards.
 
 Finally, update ~project.el~ and configure bindings.
 ~project-prefix-map~ somehow doesn't let me bind correctly as a keymap. /lame/
+~project-vc-merge-submodules~ being ~nil~ avoid including submodules.
+And we add the custom function as a fallback.
 
 #+BEGIN_SRC emacs-lisp
   (use-package project
@@ -606,8 +608,10 @@ Finally, update ~project.el~ and configure bindings.
      ("C-c p f" . project-find-file)
      ("C-c p b" . consult-project-buffer)
      ("C-c p d" . project-dired))
+    :custom
+    (project-vc-merge-submodules nil)
     :config
-    (add-to-list 'project-find-functions #'project-find-root))
+    (add-to-list 'project-find-functions #'project-find-root t))
 #+END_SRC
 
 ** Treemacs
