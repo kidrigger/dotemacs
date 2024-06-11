@@ -761,6 +761,40 @@ I'm using ~consult~ so ofc, I need to integrate ~flycheck~ in it.
 ** Org Mode
 
 Org mode is a gem to write all kinds of markup. Including this file XD
+All the bindings are as follows
+
+Prefix ~SPC n~
++ ~i~ Capture
++ ~c~ Roam Capture
++ ~r~ Roam Refile
++ ~b~ Roam Buffer Toggle
++ ~j~ Daily Journal
++ ~f~ Find Node
++ ~l~ Roam forward links
++ ~L~ Roam backward links
++ ~s~ Search
+
+#+begin_src emacs-lisp
+  (setq org-directory (file-truename "~/Documents/org"))
+#+end_src
+
+*** Org Capture Templates
+
+#+begin_src emacs-lisp
+  (use-package org-mode
+    :bind ("C-c n i" . org-capture) 
+    :custom
+    (org-capture-templates
+     '(("s" "Scheduled" entry (file "agenda/main.org")
+        "* TODO %?\nSCHEDULED:<%(org-read-date)>")
+       ("d" "Deadline" entry (file "agenda/main.org")
+       "* TODO %?\nDEADLINE:<%(org-read-date)>")
+       ("t" "TODO" entry (file "agenda/main.org")
+        "* TODO %?\n")
+       ("i" "Inbox" entry (file "inbox.org")
+        "* %?\n:PROPERTIES:\n#+DATE:%(current-time-string)\n:END:\n"))))
+#+end_src
+
 *** Org Settings
 Basic settings that use some of the ligatures and glyphs from the nerdfonts.
 This will look nice.
@@ -777,19 +811,7 @@ This will look nice.
    ;; Org styling, hide markup etc.
    org-hide-emphasis-markers t
    org-pretty-entities t
-   org-ellipsis "…"
-
-   org-agenda-tags-column 0
-   org-agenda-block-separator ?─
-   org-agenda-time-grid
-   '((daily today require-timed)
-     (800 1000 1200 1400 1600 1800 2000)
-     " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
-   org-agenda-current-time-string
-   "◀── now ─────────────────────────────────────────────────"
-   org-agenda-skip-deadline-if-done t
-   org-agenda-skip-scheduled-if-done t)
-
+   org-ellipsis "…")
 #+END_SRC
 
 Bind ~org-create-table~ to easy to access command maps.
@@ -836,10 +858,24 @@ Write the source blocks in one go!
 
 *** Org Agenda
 
-Add the files from main and daily to org agenda.
+Setup a single ~org-agenda~ file so that it is easy to manage.
 
 #+begin_src emacs-lisp
-  (setq org-agenda-files (mapcar #'file-truename '("~/Documents/org/main" "~/Documents/org/daily")))
+  (use-package org-agenda
+    :custom
+    (org-agenda-tags-column 0)
+    (org-agenda-block-separator ?─)
+    (org-agenda-time-grid
+     '((daily today require-timed)
+      (800 1000 1200 1400 1600 1800 2000)
+      " ┄┄┄┄┄ " " ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄"))
+    (org-agenda-current-time-string
+     "◀── now ─────────────────────────────────────────────────")
+    (org-agenda-skip-deadline-if-done t)
+    (org-agenda-skip-scheduled-if-done t)
+    (org-agenda-files (mapcar #'file-truename '("~/Documents/org/agenda/" "~/Documents/org/inbox.org")))
+    :bind
+    ("C-c o A" . org-agenda))
 #+end_src
 
 ** Org Roam
@@ -858,7 +894,13 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
            :if-new (file+head "main/${slug}.org"
                               "#+title: ${title}\n")
            :immediate-finish t
-           :unnarrowed t)))     
+           :unnarrowed t)
+          ("r" "reference" plain
+           "%?"
+           :if-new (file+head "reference/${title}.org"
+                              "#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)))
     (org-roam-node-display-template
      (concat "${type:10} ${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
     :init
@@ -867,7 +909,6 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
                 ("n c" . org-roam-capture)
                 ("n r" . org-roam-refile)
                 ("n b" . org-roam-buffer-toggle)
-                ("n f" . org-roam-node-find)
                 ("n j" . org-roam-dailies-capture-today)) 
     :config
     (org-roam-db-autosync-mode)
@@ -900,13 +941,13 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
     (consult-customize
      consult-org-roam-forward-links
      :preview-key "M-.")
-    :bind
+    :bind (:map mode-specific-map
     ;; Define some convenient keybindings as an addition
-    ("C-c n e" . consult-org-roam-file-find)
-    ("C-c n b" . consult-org-roam-backlinks)
-    ("C-c n B" . consult-org-roam-backlinks-recursive)
-    ("C-c n l" . consult-org-roam-forward-links)
-    ("C-c n s" . consult-org-roam-search))
+                ("n f" . consult-org-roam-file-find)
+                ("n L" . consult-org-roam-backlinks)
+                ("n B" . consult-org-roam-backlinks-recursive)
+                ("n l" . consult-org-roam-forward-links)
+                ("n s" . consult-org-roam-search)))
 #+end_src
 
 ** Prog Mode
