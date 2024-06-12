@@ -206,6 +206,10 @@ Some bindings for random things that will make sense in context of Meow for usab
     (:map mode-specific-map
           ("w r" . split-window-right)
           ("w d" . split-window-below)
+          ("w <right>" . windmove-right)
+          ("w <left>" . windmove-left)
+          ("w <up>" . windmove-up)
+          ("w <down>" . windmove-down)
           ("w x" . delete-window)
           ("w w" . other-window)))
 #+END_SRC
