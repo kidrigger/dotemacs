@@ -611,6 +611,7 @@ And we add the custom function as a fallback.
     (("C-c p p" . project-switch-project)
      ("C-c p f" . project-find-file)
      ("C-c p b" . consult-project-buffer)
+     ("C-c p c" . project-compile)
      ("C-c p d" . project-dired))
     :custom
     (project-vc-merge-submodules nil)
