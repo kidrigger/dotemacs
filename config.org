@@ -702,7 +702,8 @@ And we add the custom function as a fallback.
     :bind
     ("C-c p w"   . treemacs-select-window)
     ("C-c p x"   . treemacs-delete-other-windows)
-    ("C-c p t"   . treemacs)
+    ("C-c p t"   . treemacs-display-current-project-exclusively)
+    ("C-c p T"   . treemacs-add-and-display-current-project)
     ;; ("C-c p F" . treemacs-find-tag)
     ;; ("c-c p s" . treemacs-find-file)
     ("C-c p D"   . treemacs-select-directory)
