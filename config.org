@@ -1246,6 +1246,15 @@ Configure ~sly~ if we do have a ~common-lisp~ implementation. Also, the ~sly~ RE
     (inferior-lisp-program kr-clisp-impl))
 #+END_SRC
 
+** HLSL
+
+High Level Shading Language for shaders. Fun stuff.
+
+#+begin_src emacs-lisp
+  (use-package hlsl-mode
+    :ensure (hlsl-mode :type git :host github :repo "jcaw/hlsl-mode"))
+#+end_src
+
 ** Zotero Integration
 
 Zotero is nice for managing everything.
