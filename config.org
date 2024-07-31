@@ -1026,10 +1026,14 @@ While ~org-roam~ does heavily use ~org-mode~, it deserves its own category since
            :unnarrowed t)
           ("r" "reference" plain
            "%?"
-           :if-new (file+head "reference/${title}.org"
-                              "#+title: ${title}\n")
+           :if-new (file+head "reference/${slug}.org"
+                              "#+title: ${title}\n#+filetags: :reference:\n")
            :immediate-finish t
-           :unnarrowed t)))
+           :unnarrowed t)
+          ("p" "personal" plain
+           "%?"
+           :if-new (file+head "personal/${slug}.org"
+                              "#+title: ${title}\n#+filetags: :personal:\n"))))
     (org-roam-node-display-template
      (concat "${type:10} ${title:*} " (propertize "${tags:20}" 'face 'org-tag)))
     :init
