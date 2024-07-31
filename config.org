@@ -555,6 +555,7 @@ A little nice dashboard to be shown at startup.
     (dashboard-projects-backend 'project-el)
     (dashboard-vertically-center-content t)
     :config
+    (kill-buffer "*scratch*")
     (add-to-list 'dashboard-items '(projects . 5))
     (dashboard-setup-startup-hook))
 #+END_SRC

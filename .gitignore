@@ -10,3 +10,6 @@ history
 eln-cache/
 /projects
 /transient/
+.cache/
+\#*\#
+customizations.el
