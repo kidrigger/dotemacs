@@ -338,8 +338,8 @@ For the reasons of /correctness/, we must wait after, in order to ensure all the
 Lightly transparent stuff always looks cool, especially when you also have blur.
 
 #+BEGIN_SRC emacs-lisp
-  (set-frame-parameter (selected-frame) 'alpha-background 90)
-  (add-to-list 'default-frame-alist '(alpha-background . 90))
+  (set-frame-parameter (selected-frame) 'alpha-background 100)
+  (add-to-list 'default-frame-alist '(alpha-background . 100))
 #+END_SRC
 
 *** Frame
@@ -455,18 +455,16 @@ _Underline_
 :keyword:
 Ligature != -> => ... ;; 0x124 0xA1C3E
 
-** Theme (Catpuccin)
+** Theme (Misterioso)
 
-I'm using ~meow~ for keybinds. It will be *wrong* to use anything but ~catpuccin~ for the theme.
-~catpuccin~ looks nice too, so that shall be the main for now.
+No longer friends with catppuccin, moving to Misterioso.
+This one is a built-in and is pretty good.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package catppuccin-theme
-    :ensure t
-    :demand t
+  (use-package emacs
     :config
-    (load-theme 'catppuccin :no-confirm))
-#+END_SRC
+    (load-theme 'misterioso :no-confirm))
+    #+END_SRC
 
 ** Modeline (Mood-line)
 
@@ -486,7 +484,6 @@ Install Mood Line and configure the format etc.
   (use-package mood-line
     :ensure t
     :demand t
-    :after catppuccin-theme
     :config
     (mood-line-mode)
     :custom
