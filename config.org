@@ -549,7 +549,8 @@ A little nice dashboard to be shown at startup.
            (elpaca-after-init . dashboard-initialize))
     :custom
     (initial-buffer-choice (lambda ()
-                             (get-buffer-create dashboard-buffer-name)))
+                             (get-buffer-create dashboard-buffer-name)
+                             (dashboard-open)))
     (dashboard-banner-logo-title "Kidrigger's Emacs!")
     (dashboard-startup-banner 2)
     (dashboard-footer-messages '("“Whatever you are, be a good one.” Abraham Lincoln"
@@ -564,8 +565,10 @@ A little nice dashboard to be shown at startup.
                                  "“No act of kindness, no matter how small, is ever wasted.” Aesop"
                                  "“May your choices reflect your hopes, not your fears.” Nelson Mandela"))
     (dashboard-center-content t)
+    (dashboard-projects-backend 'project-el)
     (dashboard-vertically-center-content t)
     :config
+    (add-to-list 'dashboard-items '(projects . 5))
     (dashboard-setup-startup-hook))
 #+END_SRC
 
