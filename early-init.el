@@ -18,8 +18,10 @@
 (setq vc-follow-symlinks t)
 
 ;; Add default font
-(add-to-list 'default-frame-alist
-             '(font . "FiraCode Nerd Font Mono-10"))
+(push '(font . "FiraCode Nerd Font Mono-10")
+      default-frame-alist)
+
+(push '(fullscreen . maximized) default-frame-alist)
 
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache

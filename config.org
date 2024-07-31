@@ -149,19 +149,6 @@ How hard is it to really make simplicity default?
   (setq default-process-coding-system '(utf-8-unix . utf-8-unix)))
 #+END_SRC
 
-*** Start in a larger window
-
-The default emacs window is too small
-
-#+begin_src emacs-lisp
-  (use-package emacs
-    :hook
-    (server-after-make-frame . 
-                             (lambda ()
-                               (when (window-system)
-                                   (set-frame-size (selected-frame) 90 55)))))
-#+end_src
-
 *** Use spaces but configure tab-width
 Go mode needs tabs. Use spaces otherwise.
 I don't think I'll ever use ~golang~ but it never hurts to be safe.
